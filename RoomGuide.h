@@ -19,7 +19,10 @@ public:
     void visit();
 
     int getVisitCount();
+    int getCapacity();
+
     string getName();
+    string getType();
 };
 
 class Guide {
@@ -32,6 +35,7 @@ public:
 
     void goToRoom(Room* room);
     void printCurrentRoomInfo();
+    void printGuideAndCurrentRoomInfo();
 
     Room* getCurrentRoom();
 };

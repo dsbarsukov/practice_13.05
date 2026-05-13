@@ -10,7 +10,10 @@ void printMenu() {
     cout << "2. Информация о текущей комнате" << endl;
     cout << "3. Показать все посещённые комнаты" << endl;
     cout << "4. Самая посещаемая комната" << endl;
-    cout << "5. Выход" << endl;
+    cout << "5. Показать список всех комнат" << endl;
+    cout << "6. Общее количество посещений" << endl;
+    cout << "7. Информация о гиде и текущей комнате" << endl;
+    cout << "8. Выход" << endl;
     cout << "Выберите пункт: ";
 }
 
@@ -19,7 +22,7 @@ void printRoomsList(Room* rooms[], int size) {
     cout << "Доступные комнаты:" << endl;
 
     for (int i = 0; i < size; i++) {
-        cout << i + 1 << ". " << rooms[i]->getName() << endl;
+        cout << i + 1 << ". " << rooms[i]->getName() << " (" << rooms[i]->getType() << ", вместимость: " << rooms[i]->getCapacity() << ")" << endl;
     }
 }
 
@@ -62,8 +65,20 @@ void printMostVisitedRoom(Room* rooms[], int size) {
     }
 }
 
+void printTotalVisits(Room* rooms[], int size) {
+    int totalVisits = 0;
+
+    for (int i = 0; i < size; i++) {
+        totalVisits += rooms[i]->getVisitCount();
+    }
+
+    cout << endl;
+    cout << "Общее количество посещений всех комнат: " << totalVisits << endl;
+}
+
 int main() {
     const int ROOMS_COUNT = 5;
+    const int GROUP_SIZE = 10;
 
     Room* rooms[ROOMS_COUNT];
 
@@ -77,7 +92,7 @@ int main() {
 
     int choice = 0;
 
-    while (choice != 5) {
+    while (choice != 8) {
         printMenu();
         cin >> choice;
 
@@ -91,8 +106,18 @@ int main() {
                 cin >> roomNumber;
 
                 if (roomNumber >= 1 && roomNumber <= ROOMS_COUNT) {
-                    guide.goToRoom(rooms[roomNumber - 1]);
-                } else {
+                    Room* selectedRoom = rooms[roomNumber - 1];
+
+                    if (selectedRoom->getName() == "Серверная" && GROUP_SIZE > selectedRoom->getCapacity()) {
+                        cout << "Нельзя посетить серверную: группа слишком большая." << endl;
+                        cout << "Размер группы: " << GROUP_SIZE << endl;
+                        cout << "Вместимость серверной: " << selectedRoom->getCapacity() << endl;
+                    }
+                    else {
+                        guide.goToRoom(selectedRoom);
+                    }
+                }
+                else {
                     cout << "Некорректный номер комнаты." << endl;
                 }
 
@@ -117,6 +142,22 @@ int main() {
             }
 
             case 5: {
+                printRoomsList(rooms, ROOMS_COUNT);
+                break;
+            }
+
+            case 6: {
+                printTotalVisits(rooms, ROOMS_COUNT);
+                break;
+            }
+
+            case 7: {
+                cout << endl;
+                guide.printGuideAndCurrentRoomInfo();
+                break;
+            }
+
+            case 8: {
                 cout << "Завершение программы..." << endl;
                 break;
             }

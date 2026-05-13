@@ -27,8 +27,16 @@ int Room::getVisitCount() {
     return visitCount;
 }
 
+int Room::getCapacity() {
+    return capacity;
+}
+
 string Room::getName() {
     return name;
+}
+
+string Room::getType() {
+    return type;
 }
 
 // ===== Guide =====
@@ -46,6 +54,18 @@ void Guide::goToRoom(Room* room) {
 }
 
 void Guide::printCurrentRoomInfo() {
+    if (currentRoom == nullptr) {
+        cout << "Группа пока не находится ни в одной комнате." << endl;
+    }
+    else {
+        cout << "Текущая комната:" << endl;
+        currentRoom->printInfo();
+    }
+}
+
+void Guide::printGuideAndCurrentRoomInfo() {
+    cout << "Гид: " << name << endl;
+
     if (currentRoom == nullptr) {
         cout << "Группа пока не находится ни в одной комнате." << endl;
     }
